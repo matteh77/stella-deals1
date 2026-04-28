@@ -1,0 +1,14 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { guides, getGuideBySlug } from "@/data/guides";
+import { brandName } from "@/data/locales";
+
+export function generateStaticParams() { return guides.map((guide) => ({ slug: guide.slug })); }
+export default async function GuidePage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const guide = getGuideBySlug(resolvedParams.slug);
+  if (!guide) notFound();
+  return (
+    <main className="min-h-screen px-6 py-12"><article className="mx-auto max-w-3xl rounded-[2rem] bg-white/90 p-8 shadow-soft ring-1 ring-slate-200"><Link href="/guides" className="text-sm text-slate-500 hover:text-slate-950">← Back to guides</Link><div className="mt-8 flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-wide text-slate-500"><span className="rounded-full bg-amber-100 px-3 py-1 text-amber-700">{guide.category}</span><span>{guide.readTime}</span><span>Updated {guide.date}</span></div><h1 className="mt-5 text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">{guide.title}</h1><p className="mt-5 text-lg leading-8 text-slate-600">{guide.excerpt}</p><div className="mt-8 rounded-3xl bg-slate-50 p-5 text-sm leading-6 text-slate-600 ring-1 ring-slate-200">This guide is informational and does not display Amazon prices, reviews or ratings. Product details should always be checked directly on Amazon before purchase.</div><div className="mt-10 space-y-9">{guide.sections.map((section) => (<section key={section.heading}><h2 className="text-2xl font-bold text-slate-950">{section.heading}</h2><p className="mt-3 leading-8 text-slate-600">{section.body}</p></section>))}</div><div className="mt-12 rounded-3xl bg-amber-50 p-6 ring-1 ring-amber-200"><h2 className="text-xl font-bold text-slate-950">Browse related product ideas</h2><p className="mt-3 text-sm leading-6 text-slate-700">Stella Deals organises product ideas by region. Choose the Amazon marketplace that matches your country and verify product details directly on Amazon.</p><div className="mt-5 flex flex-wrap gap-3"><Link href="/it" className="rounded-2xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white hover:bg-amber-600">Italy</Link><Link href="/uk" className="rounded-2xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white hover:bg-amber-600">United Kingdom</Link><Link href="/de" className="rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-200">Germany</Link><Link href="/fr" className="rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-200">France</Link><Link href="/es" className="rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-200">Spain</Link></div></div><p className="mt-10 text-sm text-slate-400">© {brandName}. This content is original editorial guidance for product discovery.</p></article></main>
+  );
+}

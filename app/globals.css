@@ -1,0 +1,4 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root{color-scheme:light}body{background:radial-gradient(circle at top left,rgba(251,191,36,.14),transparent 32rem),linear-gradient(180deg,#f8fafc 0%,#eef2f7 100%);color:#0f172a}a{text-decoration:none}
