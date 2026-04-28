@@ -1,363 +1,475 @@
 import type { RegionCode } from "./locales";
 
-type ProductRegion = { title: string; description: string; amazonUrl: string };
-type Product = { id: string; category: string; emoji: string; regions: Partial<Record<RegionCode, ProductRegion>> };
+type ProductRegion = {
+  title: string;
+  description: string;
+  amazonUrl: string;
+};
 
-function regionUrl(region: RegionCode, query: string) {
-  const domains: Record<RegionCode, string> = {
-    it: "https://www.amazon.it",
-    de: "https://www.amazon.de",
-    fr: "https://www.amazon.fr",
-    es: "https://www.amazon.es",
-    uk: "https://www.amazon.co.uk"
-  };
-  return `${domains[region]}/s?k=${encodeURIComponent(query)}`;
-}
+type Product = {
+  id: string;
+  category: string;
+  emoji: string;
+  regions: Partial<Record<RegionCode, ProductRegion>>;
+};
 
-function product(
-  id: string,
-  category: string,
-  emoji: string,
-  query: string,
-  regions: Record<RegionCode, Omit<ProductRegion, "amazonUrl">>
-): Product {
-  return {
-    id,
-    category,
-    emoji,
-    regions: {
-      it: { ...regions.it, amazonUrl: regionUrl("it", query) },
-      de: { ...regions.de, amazonUrl: regionUrl("de", query) },
-      fr: { ...regions.fr, amazonUrl: regionUrl("fr", query) },
-      es: { ...regions.es, amazonUrl: regionUrl("es", query) },
-      uk: { ...regions.uk, amazonUrl: regionUrl("uk", query) }
-    }
-  };
+const amazonDomains: Record<RegionCode, string> = {
+  it: "it",
+  de: "de",
+  fr: "fr",
+  es: "es",
+  uk: "co.uk"
+};
+
+function amazonSearch(region: RegionCode, query: string) {
+  return `https://www.amazon.${amazonDomains[region]}/s?k=${encodeURIComponent(
+    query
+  )}`;
 }
 
 export const products: Product[] = [
-  product("powerbank", "Tech", "PB", "compact usb c power bank 10000mah", {
-    it: {
-      title: "Powerbank compatta USB-C",
-      description:
-        "Una powerbank compatta e utile quando usi il telefono per mappe, biglietti digitali, foto e messaggi durante giornate lunghe fuori casa. Prima di scegliere, verifica capacita in mAh, peso, porte USB-C disponibili e compatibilita con i tuoi dispositivi direttamente su Amazon."
-    },
-    de: {
-      title: "Kompakte USB-C-Powerbank",
-      description:
-        "Eine kompakte Powerbank hilft Pendlern, Reisenden und Studierenden, wenn Smartphone, Kopfhoerer oder E-Reader unterwegs durchhalten muessen. Pruefe bei Amazon Kapazitaet in mAh, Gewicht, USB-C-Ein- und Ausgaenge, Ladeleistung und Kompatibilitaet mit deinen Geraeten."
-    },
-    fr: {
-      title: "Batterie externe USB-C compacte",
-      description:
-        "Une batterie externe compacte sert aux trajets, voyages et longues journees ou le telephone gere plans, billets et messages. Avant de choisir, verifiez sur Amazon la capacite en mAh, le poids, les ports USB-C, la puissance de charge et la compatibilite avec vos appareils."
-    },
-    es: {
-      title: "Powerbank USB-C compacta",
-      description:
-        "Una powerbank compacta resulta util para viajes, universidad y jornadas largas en las que el movil se usa para mapas, pagos y comunicacion. Comprueba en Amazon capacidad en mAh, peso, puertos USB-C, potencia de carga y compatibilidad con tus dispositivos."
-    },
-    uk: {
-      title: "Compact USB-C power bank",
-      description:
-        "A compact power bank is useful for commuters, travellers and students who rely on a phone for maps, tickets, photos and messages. Check capacity in mAh, weight, USB-C ports, charging output and device compatibility directly on Amazon before choosing."
+  {
+    id: "anker-style-powerbank",
+    category: "Tech",
+    emoji: "PB",
+    regions: {
+      it: {
+        title: "Powerbank compatta USB-C",
+        description:
+          "Una powerbank compatta è utile quando usi il telefono per mappe, biglietti digitali, foto e messaggi durante giornate lunghe fuori casa. Prima di scegliere, verifica capacità in mAh, peso, porte USB-C disponibili e compatibilità con i tuoi dispositivi direttamente su Amazon.",
+        amazonUrl: amazonSearch("it", "powerbank compatta usb c 10000mah")
+      },
+      de: {
+        title: "Kompakte USB-C Powerbank",
+        description:
+          "Eine kompakte Powerbank ist praktisch für Reisen, Universität, Arbeit und lange Tage unterwegs. Vor dem Kauf sollten Kapazität, Gewicht, USB-C-Anschlüsse und Kompatibilität mit den eigenen Geräten direkt auf Amazon geprüft werden.",
+        amazonUrl: amazonSearch("de", "kompakte powerbank usb c 10000mah")
+      },
+      fr: {
+        title: "Batterie externe USB-C compacte",
+        description:
+          "Une batterie externe compacte est utile lors des voyages, des journées d’étude ou des déplacements prolongés. Avant de choisir, il est conseillé de vérifier la capacité, le poids, les ports USB-C et la compatibilité directement sur Amazon.",
+        amazonUrl: amazonSearch("fr", "batterie externe compacte usb c 10000mah")
+      },
+      es: {
+        title: "Powerbank USB-C compacta",
+        description:
+          "Una powerbank compacta es útil para viajes, universidad, trabajo y días largos fuera de casa. Antes de elegir, conviene comprobar capacidad, peso, puertos USB-C y compatibilidad directamente en Amazon.",
+        amazonUrl: amazonSearch("es", "powerbank compacta usb c 10000mah")
+      },
+      uk: {
+        title: "Compact USB-C power bank",
+        description:
+          "A compact power bank is useful for travel, commuting, study days and long days away from home. Before choosing one, check capacity, weight, USB-C ports and device compatibility directly on Amazon.",
+        amazonUrl: amazonSearch("uk", "compact usb c power bank 10000mah")
+      }
     }
-  }),
-  product("cable-organizer", "Travel", "USB", "travel cable organizer electronics", {
-    it: {
-      title: "Organizer per cavi da viaggio",
-      description:
-        "Un organizer per cavi raccoglie caricatore, adattatori, auricolari, schede e piccoli accessori in un solo punto della borsa. E indicato per viaggio, studio e lavoro mobile; su Amazon controlla dimensioni interne, tasche elastiche, chiusura, materiale e spazio per alimentatori piu spessi."
-    },
-    de: {
-      title: "Kabelorganizer fuer Reisen",
-      description:
-        "Ein Kabelorganizer haelt Ladegeraet, Adapter, Ohrhoerer, Speicherkarten und kurze Kabel zusammen, damit sie nicht lose im Rucksack liegen. Er passt zu Reise, Studium und mobilem Arbeiten; pruefe bei Amazon Innenaufteilung, Reissverschluss, Material und Platz fuer groessere Netzteile."
-    },
-    fr: {
-      title: "Organiseur de cables de voyage",
-      description:
-        "Un organiseur de cables regroupe chargeur, adaptateurs, ecouteurs, cartes memoire et petits accessoires dans une seule pochette. Il convient aux voyages et au travail mobile; verifiez sur Amazon les dimensions, les poches elastiques, la fermeture et la place pour les chargeurs."
-    },
-    es: {
-      title: "Organizador de cables de viaje",
-      description:
-        "Un organizador de cables mantiene cargador, adaptadores, auriculares, tarjetas y cables cortos en un mismo estuche. Es util para viajar, estudiar o trabajar fuera de casa; revisa en Amazon medidas, bolsillos, cremallera, material y espacio para cargadores voluminosos."
-    },
-    uk: {
-      title: "Travel cable organizer",
-      description:
-        "A travel cable organizer keeps chargers, adapters, earbuds, memory cards and short cables together instead of loose in a backpack. It suits travel, study and mobile work; check internal dimensions, elastic pockets, closure quality, material and room for bulkier plugs on Amazon."
+  },
+  {
+    id: "cable-organizer",
+    category: "Travel",
+    emoji: "USB",
+    regions: {
+      it: {
+        title: "Organizer per cavi da viaggio",
+        description:
+          "Un organizer per cavi aiuta a tenere ordinati caricabatterie, adattatori, powerbank, auricolari e piccoli accessori elettronici. È indicato per chi viaggia spesso o porta molti dispositivi nello zaino; prima di scegliere, verifica dimensioni, numero di scomparti e tipo di chiusura su Amazon.",
+        amazonUrl: amazonSearch("it", "organizer cavi viaggio elettronica")
+      },
+      de: {
+        title: "Reise-Organizer für Kabel",
+        description:
+          "Ein Kabel-Organizer hilft dabei, Ladegeräte, Adapter, Powerbanks und kleine Elektronikzubehörteile geordnet aufzubewahren. Besonders nützlich ist er für Reisen, Studium oder Arbeit; vor dem Kauf sollten Größe, Fächer und Verschluss geprüft werden.",
+        amazonUrl: amazonSearch("de", "kabel organizer reise elektronik")
+      },
+      fr: {
+        title: "Organisateur de câbles de voyage",
+        description:
+          "Un organisateur de câbles permet de ranger chargeurs, adaptateurs, batteries externes et petits accessoires électroniques. Il convient aux voyages et aux sacs de travail; vérifiez la taille, les compartiments et la fermeture sur Amazon.",
+        amazonUrl: amazonSearch("fr", "organisateur cables voyage electronique")
+      },
+      es: {
+        title: "Organizador de cables de viaje",
+        description:
+          "Un organizador de cables ayuda a guardar cargadores, adaptadores, powerbanks y pequeños accesorios electrónicos. Es útil para viajar, estudiar o trabajar fuera de casa; revisa tamaño, compartimentos y cierre en Amazon.",
+        amazonUrl: amazonSearch("es", "organizador cables viaje electronica")
+      },
+      uk: {
+        title: "Travel cable organizer",
+        description:
+          "A travel cable organizer keeps chargers, adapters, power banks and small electronics in one place. It is useful for travel bags, backpacks and work setups; check size, compartments and closure type on Amazon.",
+        amazonUrl: amazonSearch("uk", "travel cable organizer electronics")
+      }
     }
-  }),
-  product("packing-cubes", "Travel", "BAG", "packing cubes suitcase organizer", {
-    it: {
-      title: "Organizer per valigia",
-      description:
-        "I packing cubes separano vestiti, intimo e capi usati, rendendo piu semplice trovare cio che serve senza svuotare la valigia. Sono utili per weekend, viaggi di lavoro e famiglie; su Amazon verifica misure, numero di pezzi, zip, tessuto traspirante e compatibilita con il bagaglio."
-    },
-    de: {
-      title: "Packwuerfel fuer Koffer",
-      description:
-        "Packwuerfel trennen Kleidung, Waesche und getragene Teile, sodass der Koffer auf Reisen uebersichtlicher bleibt. Sie eignen sich fuer Wochenenden, Geschaeftsreisen und Familien; pruefe bei Amazon Groessen, Setumfang, Reissverschluesse, Netzbereiche und Passform fuer dein Gepaeck."
-    },
-    fr: {
-      title: "Pochettes de rangement pour valise",
-      description:
-        "Les packing cubes separent vetements, linge et pieces utilisees pour retrouver rapidement ce dont vous avez besoin. Ils conviennent aux week-ends, voyages professionnels et familles; verifiez sur Amazon les tailles, le nombre de pochettes, les fermetures et le tissu."
-    },
-    es: {
-      title: "Organizadores para maleta",
-      description:
-        "Los packing cubes separan ropa, ropa interior y prendas usadas para que la maleta sea mas facil de manejar. Sirven para escapadas, viajes de trabajo y familias; comprueba en Amazon medidas, cantidad de piezas, cremalleras, tejido transpirable y ajuste a tu equipaje."
-    },
-    uk: {
-      title: "Suitcase packing cubes",
-      description:
-        "Packing cubes separate clothing, underwear and used items so a suitcase stays easier to search and repack. They suit weekends, work trips and family travel; check cube sizes, set contents, zips, breathable panels and compatibility with your luggage on Amazon."
+  },
+  {
+    id: "packing-cubes",
+    category: "Travel",
+    emoji: "BAG",
+    regions: {
+      it: {
+        title: "Organizer per valigia",
+        description:
+          "Gli organizer per valigia aiutano a separare vestiti, intimo, accessori e piccoli oggetti durante un viaggio. Sono utili per chi vuole preparare il bagaglio in modo più ordinato; su Amazon conviene verificare numero di pezzi, misure e materiale.",
+        amazonUrl: amazonSearch("it", "organizer valigia packing cubes")
+      },
+      de: {
+        title: "Koffer-Organizer",
+        description:
+          "Packing Cubes helfen dabei, Kleidung, Wäsche und Zubehör im Koffer zu trennen. Sie sind praktisch für kurze und lange Reisen; vor dem Kauf sollten Anzahl, Größen und Material geprüft werden.",
+        amazonUrl: amazonSearch("de", "packing cubes koffer organizer")
+      },
+      fr: {
+        title: "Organisateurs pour valise",
+        description:
+          "Les organisateurs de valise permettent de séparer vêtements, sous-vêtements et accessoires pendant un voyage. Ils sont pratiques pour garder un bagage ordonné; vérifiez le nombre de pièces, les dimensions et le tissu sur Amazon.",
+        amazonUrl: amazonSearch("fr", "packing cubes organiseur valise")
+      },
+      es: {
+        title: "Organizadores para maleta",
+        description:
+          "Los organizadores de maleta ayudan a separar ropa, ropa interior y accesorios durante un viaje. Son útiles para mantener el equipaje ordenado; revisa cantidad de piezas, tamaños y material en Amazon.",
+        amazonUrl: amazonSearch("es", "packing cubes organizador maleta")
+      },
+      uk: {
+        title: "Packing cubes for luggage",
+        description:
+          "Packing cubes help separate clothes, underwear and accessories inside a suitcase or backpack. They are useful for keeping luggage organised; check set size, dimensions and material on Amazon.",
+        amazonUrl: amazonSearch("uk", "packing cubes suitcase organizer")
+      }
     }
-  }),
-  product("desk-lamp", "Home Office", "LED", "dimmable led desk lamp", {
-    it: {
-      title: "Lampada LED da scrivania",
-      description:
-        "Una lampada LED da scrivania illumina tastiera, quaderni e documenti senza dipendere solo dalla luce della stanza. E indicata per home office, studio e lettura serale; su Amazon controlla regolazione, temperatura colore, ingombro, alimentazione e possibilita di orientare il braccio."
-    },
-    de: {
-      title: "LED-Schreibtischlampe",
-      description:
-        "Eine LED-Schreibtischlampe beleuchtet Tastatur, Notizen und Dokumente gezielt, wenn Raumlicht nicht ausreicht. Sie passt zu Homeoffice, Lernen und Lesen; pruefe bei Amazon Helligkeitsstufen, Farbtemperatur, Standflaeche, Stromversorgung und Verstellbarkeit des Arms."
-    },
-    fr: {
-      title: "Lampe de bureau LED",
-      description:
-        "Une lampe de bureau LED eclaire clavier, cahiers et documents sans dependre uniquement du plafonnier. Elle convient au teletravail, aux etudes et a la lecture; verifiez sur Amazon les niveaux de luminosite, la temperature de couleur, la base et l'orientation."
-    },
-    es: {
-      title: "Lampara LED de escritorio",
-      description:
-        "Una lampara LED de escritorio mejora la luz sobre teclado, apuntes y documentos cuando la iluminacion de la habitacion no basta. Es adecuada para teletrabajo, estudio y lectura; revisa en Amazon intensidad, temperatura de color, base, alimentacion y brazo ajustable."
-    },
-    uk: {
-      title: "LED desk lamp",
-      description:
-        "An LED desk lamp lights notebooks, keyboards and documents when room lighting is not enough for focused work. It suits home offices, study desks and evening reading; check brightness levels, colour temperature, footprint, power method and arm adjustment on Amazon."
+  },
+  {
+    id: "led-desk-lamp",
+    category: "Home Office",
+    emoji: "LED",
+    regions: {
+      it: {
+        title: "Lampada LED da scrivania",
+        description:
+          "Una lampada LED da scrivania può migliorare la visibilità durante studio, lavoro da casa o lettura serale. Prima di scegliere, verifica luminosità regolabile, temperatura colore, tipo di alimentazione e spazio occupato sulla scrivania.",
+        amazonUrl: amazonSearch("it", "lampada led scrivania dimmerabile")
+      },
+      de: {
+        title: "LED-Schreibtischlampe",
+        description:
+          "Eine LED-Schreibtischlampe kann beim Lernen, Arbeiten oder Lesen am Abend helfen. Vor dem Kauf sollten Helligkeitsstufen, Farbtemperatur, Stromversorgung und Platzbedarf geprüft werden.",
+        amazonUrl: amazonSearch("de", "led schreibtischlampe dimmbar")
+      },
+      fr: {
+        title: "Lampe de bureau LED",
+        description:
+          "Une lampe de bureau LED peut améliorer le confort visuel pour étudier, travailler ou lire. Avant de choisir, vérifiez la luminosité réglable, la température de couleur, l’alimentation et l’encombrement.",
+        amazonUrl: amazonSearch("fr", "lampe bureau led dimmable")
+      },
+      es: {
+        title: "Lámpara LED de escritorio",
+        description:
+          "Una lámpara LED de escritorio puede mejorar la visibilidad al estudiar, trabajar o leer por la noche. Conviene comprobar brillo regulable, temperatura de color, alimentación y espacio que ocupa.",
+        amazonUrl: amazonSearch("es", "lampara escritorio led regulable")
+      },
+      uk: {
+        title: "LED desk lamp",
+        description:
+          "An LED desk lamp can improve visibility for studying, working from home or reading in the evening. Check brightness levels, colour temperature, power source and desk footprint on Amazon.",
+        amazonUrl: amazonSearch("uk", "dimmable led desk lamp")
+      }
     }
-  }),
-  product("tracker", "Tech", "TAG", "bluetooth tracker keys luggage", {
-    it: {
-      title: "Tracker Bluetooth",
-      description:
-        "Un tracker Bluetooth aiuta a ritrovare chiavi, zaino, valigia o portafoglio tramite l'app compatibile del telefono. E utile per pendolari e viaggiatori; su Amazon verifica ecosistema supportato, dimensioni, batteria sostituibile o ricaricabile, metodo di fissaggio e funzioni privacy."
-    },
-    de: {
-      title: "Bluetooth-Tracker",
-      description:
-        "Ein Bluetooth-Tracker hilft, Schluessel, Rucksack, Koffer oder Geldboerse ueber eine passende Smartphone-App wiederzufinden. Er ist fuer Pendler und Reisende sinnvoll; pruefe bei Amazon Plattformkompatibilitaet, Groesse, Batterieart, Befestigung und Datenschutzfunktionen."
-    },
-    fr: {
-      title: "Traceur Bluetooth",
-      description:
-        "Un traceur Bluetooth aide a localiser cles, sac, valise ou portefeuille avec l'application compatible du telephone. Il convient aux navetteurs et voyageurs; verifiez sur Amazon l'ecosysteme pris en charge, la taille, le type de batterie, la fixation et les fonctions de confidentialite."
-    },
-    es: {
-      title: "Localizador Bluetooth",
-      description:
-        "Un localizador Bluetooth ayuda a encontrar llaves, mochila, maleta o cartera mediante la app compatible del movil. Es util para viajes y desplazamientos diarios; comprueba en Amazon ecosistema compatible, tamano, bateria, forma de sujecion y funciones de privacidad."
-    },
-    uk: {
-      title: "Bluetooth tracker",
-      description:
-        "A Bluetooth tracker helps locate keys, bags, luggage or wallets through a compatible phone app. It suits commuters, travellers and anyone who misplaces essentials; check phone ecosystem support, size, battery type, attachment method and privacy features on Amazon."
+  },
+  {
+    id: "smart-tracker",
+    category: "Tech",
+    emoji: "TAG",
+    regions: {
+      it: {
+        title: "Tracker Bluetooth per chiavi e bagagli",
+        description:
+          "Un tracker Bluetooth può aiutare a ritrovare chiavi, zaini, valigie o piccoli oggetti importanti. È utile per viaggiatori e persone che si spostano spesso; verifica compatibilità con smartphone, autonomia e modalità di aggancio su Amazon.",
+        amazonUrl: amazonSearch("it", "localizzatore bluetooth chiavi bagaglio")
+      },
+      de: {
+        title: "Bluetooth-Tracker für Schlüssel und Gepäck",
+        description:
+          "Ein Bluetooth-Tracker kann helfen, Schlüssel, Taschen oder Gepäck schneller wiederzufinden. Er ist nützlich für Reisen und Alltag; prüfen Sie Smartphone-Kompatibilität, Batterielaufzeit und Befestigungsmöglichkeiten.",
+        amazonUrl: amazonSearch("de", "bluetooth tracker schluessel gepaeck")
+      },
+      fr: {
+        title: "Traceur Bluetooth pour clés et bagages",
+        description:
+          "Un traceur Bluetooth peut aider à retrouver des clés, sacs ou bagages. Il convient aux voyages et au quotidien; vérifiez la compatibilité smartphone, l’autonomie et le système d’attache sur Amazon.",
+        amazonUrl: amazonSearch("fr", "traceur bluetooth cles bagage")
+      },
+      es: {
+        title: "Localizador Bluetooth para llaves y equipaje",
+        description:
+          "Un localizador Bluetooth puede ayudar a encontrar llaves, mochilas o maletas. Es útil para viajes y uso diario; revisa compatibilidad con el móvil, autonomía y sistema de sujeción.",
+        amazonUrl: amazonSearch("es", "localizador bluetooth llaves equipaje")
+      },
+      uk: {
+        title: "Bluetooth tracker for keys and luggage",
+        description:
+          "A Bluetooth tracker can help locate keys, bags, luggage or other small essentials. It is useful for travel and daily routines; check phone compatibility, battery life and attachment options on Amazon.",
+        amazonUrl: amazonSearch("uk", "bluetooth tracker keys luggage")
+      }
     }
-  }),
-  product("tripod", "Creator", "TRI", "smartphone tripod bluetooth remote", {
-    it: {
-      title: "Treppiede smartphone",
-      description:
-        "Un treppiede per smartphone stabilizza video, foto, videochiamate e riprese verticali senza tenere il telefono in mano. E indicato per creator, lezioni online e contenuti di viaggio; su Amazon controlla altezza, morsetto, rotazione, telecomando Bluetooth e peso supportato."
-    },
-    de: {
-      title: "Smartphone-Stativ",
-      description:
-        "Ein Smartphone-Stativ stabilisiert Videos, Fotos, Videoanrufe und Hochformat-Aufnahmen, ohne das Telefon in der Hand zu halten. Es passt zu Creators, Online-Unterricht und Reisen; pruefe bei Amazon Hoehe, Klemme, Drehung, Bluetooth-Fernausloeser und Traglast."
-    },
-    fr: {
-      title: "Trepied smartphone",
-      description:
-        "Un trepied smartphone stabilise videos, photos, appels et prises verticales sans tenir le telephone. Il convient aux createurs, cours en ligne et contenus de voyage; verifiez sur Amazon la hauteur, la pince, la rotation, la telecommande Bluetooth et la charge supportee."
-    },
-    es: {
-      title: "Tripode para smartphone",
-      description:
-        "Un tripode para smartphone estabiliza videos, fotos, videollamadas y tomas verticales sin sujetar el movil. Es adecuado para creadores, clases online y viajes; revisa en Amazon altura, pinza, rotacion, mando Bluetooth y peso soportado."
-    },
-    uk: {
-      title: "Smartphone tripod",
-      description:
-        "A smartphone tripod stabilizes photos, videos, calls and vertical clips without holding the phone by hand. It suits creators, online lessons and travel content; check height, phone clamp width, rotation, Bluetooth remote and supported weight on Amazon."
+  },
+  {
+    id: "phone-tripod",
+    category: "Creator",
+    emoji: "TRI",
+    regions: {
+      it: {
+        title: "Treppiede per smartphone",
+        description:
+          "Un treppiede per smartphone è utile per foto, video, videochiamate e contenuti social con inquadratura stabile. Prima di scegliere, verifica altezza regolabile, compatibilità con il telefono, telecomando Bluetooth e stabilità della base.",
+        amazonUrl: amazonSearch("it", "treppiede smartphone telecomando bluetooth")
+      },
+      de: {
+        title: "Smartphone-Stativ",
+        description:
+          "Ein Smartphone-Stativ ist praktisch für Fotos, Videos, Videoanrufe und Social Content. Vor dem Kauf sollten Höhe, Smartphone-Kompatibilität, Bluetooth-Fernbedienung und Stabilität geprüft werden.",
+        amazonUrl: amazonSearch("de", "smartphone stativ bluetooth fernbedienung")
+      },
+      fr: {
+        title: "Trépied pour smartphone",
+        description:
+          "Un trépied pour smartphone est utile pour photos, vidéos, appels vidéo et contenus sociaux. Vérifiez la hauteur réglable, la compatibilité, la télécommande Bluetooth et la stabilité de la base.",
+        amazonUrl: amazonSearch("fr", "trepied smartphone telecommande bluetooth")
+      },
+      es: {
+        title: "Trípode para smartphone",
+        description:
+          "Un trípode para smartphone es útil para fotos, vídeos, videollamadas y contenido social. Comprueba altura regulable, compatibilidad, mando Bluetooth y estabilidad de la base.",
+        amazonUrl: amazonSearch("es", "tripode movil mando bluetooth")
+      },
+      uk: {
+        title: "Smartphone tripod",
+        description:
+          "A smartphone tripod is useful for photos, videos, video calls and social content with a stable frame. Check adjustable height, phone compatibility, Bluetooth remote and base stability on Amazon.",
+        amazonUrl: amazonSearch("uk", "smartphone tripod bluetooth remote")
+      }
     }
-  }),
-  product("bottle", "Everyday", "BOT", "insulated stainless steel water bottle", {
-    it: {
-      title: "Borraccia termica",
-      description:
-        "Una borraccia termica mantiene bevande a portata di mano durante lavoro, studio, palestra o spostamenti. E utile per chi vuole ridurre bottiglie monouso; su Amazon verifica capacita, tenuta del tappo, larghezza dell'apertura, compatibilita con portabicchieri e istruzioni di pulizia."
-    },
-    de: {
-      title: "Isolierte Trinkflasche",
-      description:
-        "Eine isolierte Trinkflasche haelt Getraenke bei Arbeit, Studium, Sport oder Pendeln griffbereit. Sie eignet sich fuer alle, die weniger Einwegflaschen nutzen moechten; pruefe bei Amazon Fassungsvermoegen, Deckeldichtung, Oeffnung, Becherhalter-Passform und Reinigungshinweise."
-    },
-    fr: {
-      title: "Gourde isotherme",
-      description:
-        "Une gourde isotherme garde une boisson accessible au bureau, a l'universite, au sport ou dans les transports. Elle convient a ceux qui veulent limiter les bouteilles jetables; verifiez sur Amazon la capacite, le bouchon, l'ouverture, le format et l'entretien."
-    },
-    es: {
-      title: "Botella termica",
-      description:
-        "Una botella termica mantiene la bebida a mano durante trabajo, estudio, gimnasio o desplazamientos. Es util para reducir botellas desechables; comprueba en Amazon capacidad, cierre de la tapa, ancho de boca, compatibilidad con portavasos e instrucciones de limpieza."
-    },
-    uk: {
-      title: "Insulated water bottle",
-      description:
-        "An insulated bottle keeps drinks within reach during work, study, commuting or exercise. It suits people who want a reusable daily bottle; check capacity, lid seal, mouth width, cup-holder fit, cleaning guidance and replacement seal availability on Amazon."
+  },
+  {
+    id: "stainless-bottle",
+    category: "Everyday",
+    emoji: "BOT",
+    regions: {
+      it: {
+        title: "Borraccia termica in acciaio",
+        description:
+          "Una borraccia termica in acciaio è utile per palestra, lavoro, università, viaggi e giornate fuori casa. Prima di scegliere, verifica capacità, isolamento termico dichiarato, tipo di tappo, peso e facilità di pulizia.",
+        amazonUrl: amazonSearch("it", "borraccia termica acciaio inox")
+      },
+      de: {
+        title: "Isolierte Edelstahlflasche",
+        description:
+          "Eine isolierte Edelstahlflasche ist praktisch für Sport, Arbeit, Universität und Reisen. Vor dem Kauf sollten Fassungsvermögen, Isolierleistung, Verschluss, Gewicht und Reinigung geprüft werden.",
+        amazonUrl: amazonSearch("de", "edelstahl trinkflasche isoliert")
+      },
+      fr: {
+        title: "Gourde isotherme en acier",
+        description:
+          "Une gourde isotherme en acier est utile pour le sport, le travail, les études et les voyages. Vérifiez la capacité, l’isolation, le bouchon, le poids et la facilité de nettoyage.",
+        amazonUrl: amazonSearch("fr", "gourde isotherme acier inoxydable")
+      },
+      es: {
+        title: "Botella térmica de acero",
+        description:
+          "Una botella térmica de acero es útil para gimnasio, trabajo, universidad y viajes. Revisa capacidad, aislamiento, tipo de tapa, peso y facilidad de limpieza.",
+        amazonUrl: amazonSearch("es", "botella termica acero inoxidable")
+      },
+      uk: {
+        title: "Insulated stainless steel bottle",
+        description:
+          "An insulated stainless steel bottle is useful for the gym, work, study and travel. Check capacity, insulation claims, lid type, weight and cleaning instructions on Amazon.",
+        amazonUrl: amazonSearch("uk", "insulated stainless steel water bottle")
+      }
     }
-  }),
-  product("laptop-stand", "Home Office", "LAP", "adjustable laptop stand", {
-    it: {
-      title: "Supporto laptop",
-      description:
-        "Un supporto laptop solleva lo schermo e libera spazio sulla scrivania, soprattutto con tastiera e mouse esterni. E indicato per home office, studio e postazioni ibride; su Amazon verifica dimensioni compatibili, stabilita, regolazione, ventilazione, grip e peso massimo supportato."
-    },
-    de: {
-      title: "Laptopstaender",
-      description:
-        "Ein Laptopstaender hebt den Bildschirm an und schafft Platz auf dem Schreibtisch, besonders mit externer Tastatur und Maus. Er passt zu Homeoffice und Lernen; pruefe bei Amazon Laptopgroessen, Stabilitaet, Verstellung, Belueftung, Rutschschutz und maximale Traglast."
-    },
-    fr: {
-      title: "Support pour ordinateur portable",
-      description:
-        "Un support pour ordinateur portable sureleve l'ecran et libere de l'espace, surtout avec clavier et souris externes. Il convient au teletravail et aux etudes; verifiez sur Amazon les tailles compatibles, la stabilite, le reglage, la ventilation, les patins et la charge."
-    },
-    es: {
-      title: "Soporte para portatil",
-      description:
-        "Un soporte para portatil eleva la pantalla y libera espacio en el escritorio, especialmente con teclado y raton externos. Es adecuado para teletrabajo y estudio; revisa en Amazon tamanos compatibles, estabilidad, ajuste, ventilacion, agarre y peso maximo."
-    },
-    uk: {
-      title: "Laptop stand",
-      description:
-        "A laptop stand raises the screen and frees desk space, especially when paired with an external keyboard and mouse. It suits home offices, study desks and hybrid setups; check compatible laptop sizes, stability, adjustability, ventilation, grips and maximum load on Amazon."
+  },
+  {
+    id: "laptop-stand",
+    category: "Home Office",
+    emoji: "LAP",
+    regions: {
+      it: {
+        title: "Supporto regolabile per laptop",
+        description:
+          "Un supporto regolabile per laptop può aiutare a sollevare lo schermo e rendere la postazione più ordinata. È indicato per studio e lavoro da casa; verifica peso supportato, angolazione, stabilità e compatibilità con la dimensione del portatile.",
+        amazonUrl: amazonSearch("it", "supporto laptop regolabile")
+      },
+      de: {
+        title: "Verstellbarer Laptop-Ständer",
+        description:
+          "Ein verstellbarer Laptop-Ständer kann den Bildschirm anheben und den Arbeitsplatz ordentlicher machen. Prüfen Sie Tragfähigkeit, Winkel, Stabilität und Kompatibilität mit der Laptopgröße.",
+        amazonUrl: amazonSearch("de", "laptop staender verstellbar")
+      },
+      fr: {
+        title: "Support réglable pour ordinateur portable",
+        description:
+          "Un support réglable pour ordinateur portable peut surélever l’écran et organiser le bureau. Vérifiez la charge supportée, l’angle, la stabilité et la compatibilité avec la taille de l’ordinateur.",
+        amazonUrl: amazonSearch("fr", "support ordinateur portable reglable")
+      },
+      es: {
+        title: "Soporte ajustable para portátil",
+        description:
+          "Un soporte ajustable para portátil puede elevar la pantalla y mejorar el orden del escritorio. Revisa peso soportado, ángulo, estabilidad y compatibilidad con el tamaño del portátil.",
+        amazonUrl: amazonSearch("es", "soporte portatil ajustable")
+      },
+      uk: {
+        title: "Adjustable laptop stand",
+        description:
+          "An adjustable laptop stand can raise the screen and make a desk setup feel more organised. Check supported weight, angle adjustment, stability and laptop size compatibility on Amazon.",
+        amazonUrl: amazonSearch("uk", "adjustable laptop stand")
+      }
     }
-  }),
-  product("gan-charger", "Tech", "GAN", "usb c gan charger 65w", {
-    it: {
-      title: "Caricatore USB-C GaN",
-      description:
-        "Un caricatore GaN USB-C puo alimentare telefono, tablet e alcuni laptop con un corpo piu compatto rispetto a molti alimentatori tradizionali. E utile per scrivania e viaggio; su Amazon verifica watt totali, potenza per porta, standard Power Delivery, spina e cavi inclusi."
-    },
-    de: {
-      title: "USB-C-GaN-Ladegeraet",
-      description:
-        "Ein USB-C-GaN-Ladegeraet kann Smartphone, Tablet und manche Laptops mit einem kompakten Gehaeuse versorgen. Es eignet sich fuer Schreibtisch und Reise; pruefe bei Amazon Gesamtleistung, Leistung pro Port, Power-Delivery-Standard, Stecker und enthaltene Kabel."
-    },
-    fr: {
-      title: "Chargeur USB-C GaN",
-      description:
-        "Un chargeur USB-C GaN peut alimenter telephone, tablette et certains ordinateurs portables dans un format compact. Il sert au bureau comme en voyage; verifiez sur Amazon la puissance totale, la puissance par port, Power Delivery, la prise et les cables inclus."
-    },
-    es: {
-      title: "Cargador USB-C GaN",
-      description:
-        "Un cargador USB-C GaN puede alimentar movil, tablet y algunos portatiles con un formato compacto. Es util para escritorio y viajes; comprueba en Amazon potencia total, potencia por puerto, Power Delivery, tipo de enchufe y cables incluidos."
-    },
-    uk: {
-      title: "USB-C GaN charger",
-      description:
-        "A USB-C GaN charger can power a phone, tablet and some laptops from a compact body. It suits desks and travel bags; check total wattage, per-port output, Power Delivery support, plug type, safety information and included cables on Amazon."
+  },
+  {
+    id: "gan-charger",
+    category: "Tech",
+    emoji: "GAN",
+    regions: {
+      it: {
+        title: "Caricatore USB-C GaN",
+        description:
+          "Un caricatore USB-C GaN è utile per ridurre il numero di alimentatori da portare in viaggio o tenere sulla scrivania. Prima di scegliere, verifica wattaggio, numero di porte, supporto Power Delivery e compatibilità con smartphone, tablet o laptop.",
+        amazonUrl: amazonSearch("it", "caricatore usb c gan 65w")
+      },
+      de: {
+        title: "USB-C GaN-Ladegerät",
+        description:
+          "Ein USB-C GaN-Ladegerät kann mehrere Ladegeräte im Alltag oder auf Reisen ersetzen. Prüfen Sie Wattzahl, Anschlüsse, Power Delivery und Kompatibilität mit Smartphone, Tablet oder Laptop.",
+        amazonUrl: amazonSearch("de", "usb c gan ladegeraet 65w")
+      },
+      fr: {
+        title: "Chargeur USB-C GaN",
+        description:
+          "Un chargeur USB-C GaN peut réduire le nombre d’adaptateurs à transporter. Vérifiez la puissance, le nombre de ports, Power Delivery et la compatibilité avec smartphone, tablette ou ordinateur.",
+        amazonUrl: amazonSearch("fr", "chargeur usb c gan 65w")
+      },
+      es: {
+        title: "Cargador USB-C GaN",
+        description:
+          "Un cargador USB-C GaN puede reducir el número de adaptadores necesarios en casa o de viaje. Comprueba potencia, número de puertos, Power Delivery y compatibilidad con móvil, tablet o portátil.",
+        amazonUrl: amazonSearch("es", "cargador usb c gan 65w")
+      },
+      uk: {
+        title: "USB-C GaN charger",
+        description:
+          "A USB-C GaN charger can reduce the number of adapters needed for travel or desk setups. Check wattage, port count, Power Delivery support and compatibility with phones, tablets or laptops on Amazon.",
+        amazonUrl: amazonSearch("uk", "usb c gan charger 65w")
+      }
     }
-  }),
-  product("toiletry-bag", "Travel", "KIT", "hanging toiletry bag travel", {
-    it: {
-      title: "Beauty case da viaggio",
-      description:
-        "Un beauty case da viaggio tiene separati spazzolino, flaconi, rasoi e prodotti piccoli, riducendo il rischio di perdite nella valigia. E utile per hotel, palestra e weekend; su Amazon controlla gancio, rivestimento lavabile, scomparti, dimensioni e chiusura."
-    },
-    de: {
-      title: "Kulturbeutel fuer Reisen",
-      description:
-        "Ein Reise-Kulturbeutel trennt Zahnbuerste, Flaschen, Rasierer und kleine Pflegeprodukte, damit der Koffer sauberer bleibt. Er passt zu Hotel, Sport und Wochenenden; pruefe bei Amazon Haken, abwischbares Futter, Faecher, Groesse und Verschluss."
-    },
-    fr: {
-      title: "Trousse de toilette de voyage",
-      description:
-        "Une trousse de toilette de voyage separe brosse a dents, flacons, rasoirs et petits soins pour limiter les fuites dans le bagage. Elle convient aux hotels, au sport et aux week-ends; verifiez sur Amazon le crochet, la doublure lavable, les compartiments et la taille."
-    },
-    es: {
-      title: "Neceser de viaje",
-      description:
-        "Un neceser de viaje separa cepillo, botes, maquinillas y pequenos productos para evitar derrames en la maleta. Sirve para hotel, gimnasio y escapadas; revisa en Amazon gancho, forro lavable, compartimentos, medidas y cierre."
-    },
-    uk: {
-      title: "Travel toiletry bag",
-      description:
-        "A travel toiletry bag separates toothbrushes, bottles, razors and small grooming items so luggage stays cleaner. It suits hotels, gym bags and weekend trips; check hanging hook, wipe-clean lining, compartments, dimensions and closure quality on Amazon."
+  },
+  {
+    id: "toiletry-bag",
+    category: "Travel",
+    emoji: "KIT",
+    regions: {
+      it: {
+        title: "Beauty case da viaggio appendibile",
+        description:
+          "Un beauty case appendibile aiuta a tenere ordinati prodotti da bagno, skincare e piccoli accessori durante un viaggio. È utile quando il bagno ha poco spazio; verifica dimensioni, tasche interne, gancio e materiale lavabile.",
+        amazonUrl: amazonSearch("it", "beauty case viaggio appendibile")
+      },
+      de: {
+        title: "Aufhängbarer Kulturbeutel",
+        description:
+          "Ein aufhängbarer Kulturbeutel hilft, Pflegeprodukte und kleine Accessoires auf Reisen zu ordnen. Prüfen Sie Größe, Innenfächer, Haken und waschbares Material.",
+        amazonUrl: amazonSearch("de", "kulturbeutel reise aufhaengbar")
+      },
+      fr: {
+        title: "Trousse de toilette suspendue",
+        description:
+          "Une trousse de toilette suspendue permet de ranger produits de bain, skincare et petits accessoires. Vérifiez les dimensions, les poches, le crochet et le matériau lavable.",
+        amazonUrl: amazonSearch("fr", "trousse de toilette voyage suspendue")
+      },
+      es: {
+        title: "Neceser de viaje colgante",
+        description:
+          "Un neceser colgante ayuda a organizar productos de baño, skincare y accesorios pequeños. Revisa tamaño, bolsillos interiores, gancho y material lavable.",
+        amazonUrl: amazonSearch("es", "neceser viaje colgante")
+      },
+      uk: {
+        title: "Hanging travel toiletry bag",
+        description:
+          "A hanging toiletry bag helps organise bathroom products, skincare and small accessories while travelling. Check size, internal pockets, hanging hook and washable material on Amazon.",
+        amazonUrl: amazonSearch("uk", "hanging toiletry bag travel")
+      }
     }
-  }),
-  product("travel-adapter", "Travel", "PLUG", "universal travel adapter usb c", {
-    it: {
-      title: "Adattatore universale da viaggio",
-      description:
-        "Un adattatore universale permette di collegare caricabatterie compatibili in paesi con prese diverse. E pensato per viaggi internazionali, non per sostituire trasformatori di tensione; su Amazon verifica paesi supportati, porte USB-C, limiti di potenza, fusibili e avvertenze."
-    },
-    de: {
-      title: "Universeller Reiseadapter",
-      description:
-        "Ein universeller Reiseadapter verbindet kompatible Ladegeraete mit Steckdosen in Laendern mit anderen Steckertypen. Er ist fuer internationale Reisen gedacht; pruefe bei Amazon unterstuetzte Laender, USB-C-Ports, Leistungsgrenzen, Sicherungen und Hinweise zur Spannung."
-    },
-    fr: {
-      title: "Adaptateur universel de voyage",
-      description:
-        "Un adaptateur universel permet de brancher des chargeurs compatibles dans des pays aux prises differentes. Il sert aux voyages internationaux et ne remplace pas toujours un convertisseur; verifiez sur Amazon les pays, ports USB-C, limites de puissance et fusibles."
-    },
-    es: {
-      title: "Adaptador universal de viaje",
-      description:
-        "Un adaptador universal permite conectar cargadores compatibles en paises con enchufes diferentes. Esta pensado para viajes internacionales, no siempre como convertidor de voltaje; comprueba en Amazon paises compatibles, USB-C, limites de potencia, fusibles y advertencias."
-    },
-    uk: {
-      title: "Universal travel adapter",
-      description:
-        "A universal travel adapter lets compatible chargers connect to different plug types when travelling internationally. It is not always a voltage converter; check supported countries, USB-C ports, power limits, fuse design, safety notes and device compatibility on Amazon."
+  },
+  {
+    id: "travel-adapter",
+    category: "Travel",
+    emoji: "PLG",
+    regions: {
+      it: {
+        title: "Adattatore universale da viaggio",
+        description:
+          "Un adattatore universale da viaggio è utile quando visiti paesi con prese diverse da quelle di casa. Prima di scegliere, verifica paesi compatibili, porte USB, supporto USB-C e limiti di potenza indicati su Amazon.",
+        amazonUrl: amazonSearch("it", "adattatore universale viaggio usb c")
+      },
+      de: {
+        title: "Universeller Reiseadapter",
+        description:
+          "Ein universeller Reiseadapter ist praktisch für Länder mit unterschiedlichen Steckdosen. Prüfen Sie Länderkompatibilität, USB-Anschlüsse, USB-C-Unterstützung und Leistungsgrenzen.",
+        amazonUrl: amazonSearch("de", "weltreiseadapter usb c")
+      },
+      fr: {
+        title: "Adaptateur universel de voyage",
+        description:
+          "Un adaptateur universel est utile lors de voyages dans des pays avec différentes prises. Vérifiez les pays compatibles, les ports USB, l’USB-C et les limites de puissance.",
+        amazonUrl: amazonSearch("fr", "adaptateur universel voyage usb c")
+      },
+      es: {
+        title: "Adaptador universal de viaje",
+        description:
+          "Un adaptador universal es útil al viajar a países con enchufes diferentes. Comprueba países compatibles, puertos USB, USB-C y límites de potencia.",
+        amazonUrl: amazonSearch("es", "adaptador universal viaje usb c")
+      },
+      uk: {
+        title: "Universal travel adapter",
+        description:
+          "A universal travel adapter is useful when visiting countries with different plug types. Check country compatibility, USB ports, USB-C support and power limits on Amazon.",
+        amazonUrl: amazonSearch("uk", "universal travel adapter usb c")
+      }
     }
-  }),
-  product("wireless-charger", "Tech", "QI", "wireless charging stand phone", {
-    it: {
-      title: "Supporto ricarica wireless",
-      description:
-        "Un supporto di ricarica wireless mantiene il telefono visibile su scrivania o comodino mentre si ricarica senza collegare ogni volta il cavo. E utile per telefoni compatibili; su Amazon verifica standard supportato, alimentatore richiesto, spessore custodia, angolo e stabilita."
-    },
-    de: {
-      title: "Kabelloser Ladestaender",
-      description:
-        "Ein kabelloser Ladestaender haelt das Smartphone sichtbar auf Schreibtisch oder Nachttisch, waehrend es ohne Kabelanschluss laedt. Er eignet sich fuer kompatible Telefone; pruefe bei Amazon Ladestandard, benoetigtes Netzteil, Huellendicke, Winkel und Stabilitaet."
-    },
-    fr: {
-      title: "Support de recharge sans fil",
-      description:
-        "Un support de recharge sans fil garde le telephone visible sur bureau ou table de nuit pendant la charge. Il convient aux telephones compatibles; verifiez sur Amazon la norme prise en charge, l'adaptateur requis, l'epaisseur de coque, l'angle et la stabilite."
-    },
-    es: {
-      title: "Soporte de carga inalambrica",
-      description:
-        "Un soporte de carga inalambrica mantiene el movil visible en escritorio o mesita mientras se carga sin conectar el cable cada vez. Es util para moviles compatibles; revisa en Amazon estandar soportado, adaptador necesario, grosor de funda, angulo y estabilidad."
-    },
-    uk: {
-      title: "Wireless charging stand",
-      description:
-        "A wireless charging stand keeps a compatible phone visible on a desk or bedside table while it charges without plugging in each time. Check supported charging standard, required power adapter, case thickness limits, viewing angle and stand stability on Amazon."
+  },
+  {
+    id: "wireless-charging-stand",
+    category: "Tech",
+    emoji: "CHG",
+    regions: {
+      it: {
+        title: "Supporto di ricarica wireless",
+        description:
+          "Un supporto di ricarica wireless è comodo su scrivania o comodino perché tiene il telefono visibile mentre si ricarica. Prima di scegliere, verifica compatibilità Qi, potenza supportata, alimentatore richiesto e stabilità del supporto.",
+        amazonUrl: amazonSearch("it", "supporto ricarica wireless smartphone")
+      },
+      de: {
+        title: "Kabelloser Ladeständer",
+        description:
+          "Ein kabelloser Ladeständer ist praktisch auf Schreibtisch oder Nachttisch, weil das Smartphone sichtbar bleibt. Prüfen Sie Qi-Kompatibilität, Ladeleistung, benötigtes Netzteil und Stabilität.",
+        amazonUrl: amazonSearch("de", "kabellose ladestation smartphone staender")
+      },
+      fr: {
+        title: "Support de charge sans fil",
+        description:
+          "Un support de charge sans fil est pratique sur un bureau ou une table de nuit pour garder le téléphone visible. Vérifiez la compatibilité Qi, la puissance, l’alimentation requise et la stabilité.",
+        amazonUrl: amazonSearch("fr", "support chargeur sans fil smartphone")
+      },
+      es: {
+        title: "Soporte de carga inalámbrica",
+        description:
+          "Un soporte de carga inalámbrica es práctico en el escritorio o la mesita porque mantiene el móvil visible mientras carga. Revisa compatibilidad Qi, potencia, cargador necesario y estabilidad.",
+        amazonUrl: amazonSearch("es", "soporte carga inalambrica movil")
+      },
+      uk: {
+        title: "Wireless charging stand",
+        description:
+          "A wireless charging stand is useful on a desk or bedside table because it keeps the phone visible while charging. Check Qi compatibility, supported power, required adapter and stand stability on Amazon.",
+        amazonUrl: amazonSearch("uk", "wireless charging stand phone")
+      }
     }
-  })
+  }
 ];
