@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { guides } from "@/data/guides";
+import { italianGuides } from "@/data/itGuides";
 
 export default function ItalianGuidesPage() {
   return (
@@ -11,31 +11,31 @@ export default function ItalianGuidesPage() {
 
         <div className="mt-6 rounded-[2rem] bg-white/90 p-8 shadow-soft ring-1 ring-slate-200">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
-            Guide Stella Deals
+            Guide Italia
           </p>
 
           <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">
-            Guide pratiche per scegliere prodotti utili.
+            Guide pratiche in italiano per scegliere prodotti utili.
           </h1>
 
           <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
             Questa sezione raccoglie guide editoriali pensate per aiutare gli
-            utenti a capire quali caratteristiche valutare prima di scegliere
-            accessori tech, prodotti da viaggio, strumenti per la scrivania e
-            oggetti utili per la vita quotidiana.
+            utenti italiani a capire quali caratteristiche valutare prima di
+            scegliere accessori tech, prodotti da viaggio, strumenti per la
+            scrivania e oggetti utili per la vita quotidiana.
           </p>
 
           <div className="mt-6 rounded-3xl bg-amber-50 p-5 text-sm leading-6 text-amber-900 ring-1 ring-amber-200">
-            Alcune guide complete sono attualmente disponibili in inglese. Le
-            pagine regionali italiane mantengono comunque titoli, descrizioni e
-            link Amazon localizzati per il marketplace italiano.
+            Le guide non mostrano prezzi, recensioni o valutazioni Amazon. I
+            dettagli finali dei prodotti devono sempre essere verificati
+            direttamente su Amazon prima dell’acquisto.
           </div>
 
           <div className="mt-10 grid gap-5 md:grid-cols-2">
-            {guides.map((guide) => (
+            {italianGuides.map((guide) => (
               <Link
                 key={guide.slug}
-                href={`/guides/${guide.slug}`}
+                href={`/it/guides/${guide.slug}`}
                 className="rounded-3xl border border-slate-200 bg-slate-50 p-6 transition hover:-translate-y-1 hover:bg-white hover:shadow-soft"
               >
                 <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -59,6 +59,14 @@ export default function ItalianGuidesPage() {
                 </p>
               </Link>
             ))}
+          </div>
+
+          <div className="mt-10 rounded-3xl bg-slate-50 p-5 text-sm leading-6 text-slate-600 ring-1 ring-slate-200">
+            Puoi consultare anche la sezione internazionale delle guide su{" "}
+            <Link href="/guides" className="font-semibold text-amber-700">
+              /guides
+            </Link>
+            .
           </div>
         </div>
       </section>
