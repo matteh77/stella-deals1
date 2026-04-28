@@ -10,7 +10,7 @@ export default function HomePage() {
         <div className="rounded-[2rem] bg-white/90 p-8 shadow-soft ring-1 ring-slate-200 backdrop-blur">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">{brandName}</p>
           <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-slate-950 sm:text-6xl">Practical product ideas and buying guides for everyday life.</h1>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">Stella Deals is a product discovery website focused on useful items for tech, travel, home office, creators and daily routines.</p>
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">Stella Deals is an international product discovery website with regional Amazon pages and original buying guides. It focuses on useful items for tech, travel, home office, creators and daily routines.</p>
           <div className="mt-8 grid gap-4 rounded-3xl bg-slate-50 p-6 ring-1 ring-slate-200 md:grid-cols-3">
             <div><h2 className="text-lg font-bold text-slate-950">Original guides</h2><p className="mt-2 text-sm leading-6 text-slate-600">Practical articles explain how to choose useful products without relying only on product listings.</p></div>
             <div><h2 className="text-lg font-bold text-slate-950">Curated categories</h2><p className="mt-2 text-sm leading-6 text-slate-600">Products are grouped by real use: technology, travel, desk setups, creator tools and everyday essentials.</p></div>
