@@ -37,7 +37,7 @@ export const products: Product[] = [
         title: "Powerbank compatta USB-C",
         description:
           "Una powerbank compatta è utile quando usi il telefono per mappe, biglietti digitali, foto e messaggi durante giornate lunghe fuori casa. Prima di scegliere, verifica capacità in mAh, peso, porte USB-C disponibili e compatibilità con i tuoi dispositivi direttamente su Amazon.",
-        amazonUrl: amazonSearch("it", "powerbank compatta usb c 10000mah")
+        amazonUrl: "https://www.amazon.it/dp/B0FHGTGHRH"
       },
       de: {
         title: "Kompakte USB-C Powerbank",
