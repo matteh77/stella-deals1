@@ -12,8 +12,8 @@ export default function AffiliateDisclosurePage() {
       </h1>
 
       <p className="mt-6 leading-7 text-slate-600">
-        In qualità di Affiliato Amazon, Stella Deals può ricevere un guadagno
-        dagli acquisti idonei effettuati tramite i link presenti su questo sito.
+        In qualità di Affiliato Amazon, Stella Deals riceve un guadagno dagli
+        acquisti idonei effettuati tramite i link presenti su questo sito.
       </p>
 
       <p className="mt-4 leading-7 text-slate-600">
@@ -29,8 +29,15 @@ export default function AffiliateDisclosurePage() {
       </p>
 
       <p className="mt-4 leading-7 text-slate-600">
-        Prima di acquistare, i visitatori devono sempre verificare le
-        informazioni finali direttamente su Amazon.
+        Stella Deals non mostra prezzi statici, recensioni Amazon o valutazioni
+        Amazon. Prima di acquistare, i visitatori devono sempre verificare le
+        informazioni finali direttamente sulla pagina Amazon del prodotto.
+      </p>
+
+      <p className="mt-4 leading-7 text-slate-600">
+        Amazon e il logo Amazon sono marchi di Amazon.com, Inc. o delle sue
+        affiliate. Stella Deals non è un sito ufficiale Amazon e non è
+        sponsorizzato o gestito da Amazon.
       </p>
     </main>
   );
