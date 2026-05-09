@@ -36,55 +36,63 @@ function getRegionalText(region: RegionCode) {
       guidesCta: "Leggi le guide",
       centralDisclosure:
         "Stella Deals può includere link verso marketplace Amazon. Prezzi, disponibilità e dettagli dei prodotti devono sempre essere verificati direttamente su Amazon prima dell’acquisto.",
+      affiliateNotice:
+        "In qualità di Affiliato Amazon, Stella Deals riceve un guadagno dagli acquisti idonei.",
       footer: {
         guides: "Guide",
         about: "Chi siamo",
         contact: "Contatti",
         disclosure: "Disclosure affiliazione",
-        privacy: "Privacy Policy",
+        privacy: "Privacy",
         terms: "Termini"
       }
     },
     de: {
-      guidesNav: "Guides",
-      guidesCta: "Read buying guides",
+      guidesNav: "Ratgeber",
+      guidesCta: "Ratgeber lesen",
       centralDisclosure:
-        "Stella Deals may include links to Amazon marketplaces. Prices, availability and product details should always be checked directly on Amazon before purchase.",
+        "Stella Deals kann Links zu Amazon-Marktplätzen enthalten. Preise, Verfügbarkeit und Produktdetails sollten immer direkt bei Amazon überprüft werden.",
+      affiliateNotice:
+        "Als Amazon-Partner kann Stella Deals an qualifizierten Verkäufen verdienen.",
       footer: {
-        guides: "Guides",
-        about: "About",
-        contact: "Contact",
-        disclosure: "Affiliate Disclosure",
-        privacy: "Privacy Policy",
-        terms: "Terms"
+        guides: "Ratgeber",
+        about: "Über uns",
+        contact: "Kontakt",
+        disclosure: "Affiliate-Hinweis",
+        privacy: "Datenschutz",
+        terms: "Bedingungen"
       }
     },
     fr: {
       guidesNav: "Guides",
-      guidesCta: "Read buying guides",
+      guidesCta: "Lire les guides",
       centralDisclosure:
-        "Stella Deals may include links to Amazon marketplaces. Prices, availability and product details should always be checked directly on Amazon before purchase.",
+        "Stella Deals peut inclure des liens vers des marketplaces Amazon. Les prix, la disponibilité et les détails des produits doivent toujours être vérifiés directement sur Amazon avant l’achat.",
+      affiliateNotice:
+        "En tant que Partenaire Amazon, Stella Deals peut réaliser un bénéfice sur les achats éligibles.",
       footer: {
         guides: "Guides",
-        about: "About",
+        about: "À propos",
         contact: "Contact",
-        disclosure: "Affiliate Disclosure",
-        privacy: "Privacy Policy",
-        terms: "Terms"
+        disclosure: "Mention d’affiliation",
+        privacy: "Confidentialité",
+        terms: "Conditions"
       }
     },
     es: {
-      guidesNav: "Guides",
-      guidesCta: "Read buying guides",
+      guidesNav: "Guías",
+      guidesCta: "Leer guías",
       centralDisclosure:
-        "Stella Deals may include links to Amazon marketplaces. Prices, availability and product details should always be checked directly on Amazon before purchase.",
+        "Stella Deals puede incluir enlaces a marketplaces de Amazon. Los precios, la disponibilidad y los detalles de los productos deben comprobarse siempre directamente en Amazon antes de comprar.",
+      affiliateNotice:
+        "Como Afiliado de Amazon, Stella Deals puede obtener ingresos por compras que cumplan los requisitos.",
       footer: {
-        guides: "Guides",
-        about: "About",
-        contact: "Contact",
-        disclosure: "Affiliate Disclosure",
-        privacy: "Privacy Policy",
-        terms: "Terms"
+        guides: "Guías",
+        about: "Sobre nosotros",
+        contact: "Contacto",
+        disclosure: "Divulgación de afiliados",
+        privacy: "Privacidad",
+        terms: "Términos"
       }
     },
     uk: {
@@ -92,6 +100,8 @@ function getRegionalText(region: RegionCode) {
       guidesCta: "Read buying guides",
       centralDisclosure:
         "Stella Deals may include links to Amazon marketplaces. Prices, availability and product details should always be checked directly on Amazon before purchase.",
+      affiliateNotice:
+        "As an Amazon Associate, Stella Deals earns from qualifying purchases.",
       footer: {
         guides: "Guides",
         about: "About",
@@ -107,6 +117,7 @@ function getRegionalText(region: RegionCode) {
     guidesNav: string;
     guidesCta: string;
     centralDisclosure: string;
+    affiliateNotice: string;
     footer: {
       guides: string;
       about: string;
@@ -245,7 +256,10 @@ export default async function RegionPage({
         </div>
 
         <div className="mt-8 rounded-3xl bg-amber-50 p-5 text-sm leading-6 text-amber-900 ring-1 ring-amber-200">
-          {regionalText.centralDisclosure}
+          <p>{regionalText.centralDisclosure}</p>
+          <p className="mt-2 font-semibold">
+            {regionalText.affiliateNotice}
+          </p>
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
